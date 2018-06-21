@@ -1,6 +1,6 @@
 import threading
 import time
-import Tkinter as tk
+from tkinter import *
 
 class Timer (threading.Thread):
 
@@ -21,12 +21,9 @@ class Timer (threading.Thread):
 
         print("Timer {} for {} seconds is finished".format(self.name, self.length))
 
-class GUI (tk.Frame):
-	
-	def __init__(self, master=None)
-		tk.Frame.__init__(self, master)
-		self.
 
 
-Timer("test1", 5).start()
-Timer("test2", 7).start()
+t1 = Timer("test1", 10)
+t2 = Timer("test2", 5)
+t1.start()
+t2.start()
