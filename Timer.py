@@ -1,29 +1,27 @@
 import threading
 import time
 from tkinter import *
+from queue import Queue
+
 
 class Timer (threading.Thread):
 
-    def __init__(self, name, length):
+    def __init__(self, name, time_queue, length):
         threading.Thread.__init__(self)
         self.name = name
+        self.time_queue = time_queue
         self.length = length
 
-        
     def __str__(self):
-        return "{} for {}".format(self.name, self.length)
+        return "timer name: {}".format(self.name)
 
     def run(self):
-        print("Timer {} for {} seconds is started".format(self.name, self.length))
-
-        for x in range(0, self.length):
+        print("Timer {} is started".format(self.name))
+        for x in range(self.length, -1, -1):
+            self.time_queue.put(x)
             time.sleep(1)
 
-        print("Timer {} for {} seconds is finished".format(self.name, self.length))
+
+        print("Timer {} is finished".format(self.name))
 
 
-
-t1 = Timer("test1", 10)
-t2 = Timer("test2", 5)
-t1.start()
-t2.start()
