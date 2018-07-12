@@ -22,7 +22,11 @@ class TimerWindow:
             window.update()
             if not self.time_queue.empty():
                 time_value = self.time_queue.get()
-                current_time.configure(text=str(time_value))
+                if time_value > 0:
+                    current_time.configure(text=str(time_value))
+                else:
+                    current_time.configure(text="Timer for {} seconds finished".format(length))
+
 
 
 
