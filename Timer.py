@@ -18,6 +18,7 @@ class Timer (threading.Thread):
     def run(self):
         print("Timer {} is started".format(self.name))
         for x in range(self.length, -1, -1):
+            print(x)
             self.time_queue.put(x)
             time.sleep(1)
 
