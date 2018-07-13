@@ -27,6 +27,7 @@ class TimerWindow:
                 else:
                     current_time.configure(text="Timer for {} seconds finished".format(length))
 
+    def start_timer(self):
 
 
 
