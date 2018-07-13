@@ -30,9 +30,9 @@ class TimerWindow:
 
     def start_timer(self):
         if self.user_time_field_string.get().isdigit():
+
             user_time = int(self.user_time_field_string.get())
 
-            self.time_queue.put(user_time)
             current_time = Label(self.window, text=str(user_time))
             current_time.pack()
             t1 = Timer("temp", self.time_queue, user_time)
