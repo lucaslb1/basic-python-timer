@@ -1,7 +1,7 @@
 from tkinter import *
 from queue import Queue
 from Timer import Timer
-
+from sys import platform
 
 # Creates a window which runs a single timer inside of it
 # Queue is used to communicate with Timer thread
@@ -10,6 +10,9 @@ class TimerWindow:
     def __init__(self):
         # Initializes state as not running
         self.is_running = False
+
+        # Alarm sound file
+        self.audio_file = "alarm_sound.wav"
 
         # Queue used to communicate between timer and GUI threads
         self.time_queue = Queue()
@@ -66,9 +69,30 @@ class TimerWindow:
                     # Displays timer value or finished message
                     if time_value > 0:
                         self.current_time.configure(text=str(time_value))
+
+                    # Updates text then plays audio file
                     else:
                         self.current_time.configure(text="{} second timer\nfinished".format(user_time))
+                        self.window.update_idletasks()
+                        self.window.update()
+
+                        self.play_audio()
                         self.is_running = False
+                        break
+
+    # Plays audio file dependent on os
+    def play_audio(self):
+
+        # Uses different methods to play sound depending on system
+        if platform == "darwin":
+            # OSX
+            import subprocess
+            return_code = subprocess.call(["afplay", self.audio_file])
+            print("Audio return code: {}".format(return_code))
+        elif platform == "win32":
+            # Windows
+            import winsound
+            winsound.playsound(self.audio_file, winsound.SND_FILENAME)
 
 
 if __name__ == "__main__":
