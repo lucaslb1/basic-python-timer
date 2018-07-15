@@ -63,7 +63,7 @@ class TimerWindow:
                 if not self.time_queue.empty():
                     time_value = self.time_queue.get()
 
-                    # Displays timer value or
+                    # Displays timer value or finished message
                     if time_value > 0:
                         self.current_time.configure(text=str(time_value))
                     else:
