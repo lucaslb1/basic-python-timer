@@ -4,6 +4,8 @@ from tkinter import *
 from queue import Queue
 
 
+# Uses a Queue to communicate with the TimerWindow GUI
+#
 class Timer (threading.Thread):
 
     def __init__(self, name, time_queue, length):
