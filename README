@@ -1,8 +1,0 @@
-Lucas Battelle 6/21/2018
-
-This application was created as a way for me to learn the python language and higher level
-concepts such as multithreading and gui's.
-
-Currently when a new TimerWindow object is created a window appears with a time counting down.
-Once it reaches zero the timer displays the finished message.
-
