@@ -17,10 +17,13 @@ class Timer (threading.Thread):
     def __str__(self):
         return "{}".format(self.name)
 
+    # Timer starts when thread is started
     def run(self):
         print("{} started".format(self.name))
         for x in range(self.length, -1, -1):
             print(x)
+
+            # Sends time to queue for GUI
             self.time_queue.put(x)
             time.sleep(1)
 
