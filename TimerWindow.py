@@ -3,6 +3,7 @@ from queue import Queue
 from Timer import Timer
 from sys import platform
 
+
 # Creates a window which runs a single timer inside of it
 # Queue is used to communicate with Timer thread
 class TimerWindow:
@@ -19,22 +20,31 @@ class TimerWindow:
 
         # Creating the window
         self.window = Tk()
-        self.window.geometry("150x100")
-        self.window.title("Countdown Timer")
+        self.window.geometry("150x80")
+        self.window.title("Timer")
+        self.window.resizable(height=False,width=False)
 
         # The StringVar holds the Entry's text
         self.user_time_field_string = StringVar()
 
+        # Frame holding Entry and Button
+        top_frame = Frame(self.window)
+        top_frame.pack(side=TOP, fill=X)
+
         # The field which the user enters their time into
-        self.user_time_field = Entry(self.window, width=10, textvariable=self.user_time_field_string)
-        self.user_time_field.pack()
+        self.user_time_field = Entry(top_frame, width=10, textvariable=self.user_time_field_string)
+        self.user_time_field.pack(side=LEFT)
 
         # Button which starts the timer
-        self.start_button = Button(self.window, text="Start", command=self.start_timer)
-        self.start_button.pack()
+        self.start_button = Button(top_frame, text="Start", command=self.start_timer)
+        self.start_button.pack(side=LEFT)
+
+        # Creates frame holding countdown so that it may be centered
+        bottom_frame = Frame(self.window, width=150)
+        bottom_frame.pack(side=TOP, fill=X)
 
         # Initializes current time as self attribute
-        self.current_time = Label(self.window)
+        self.current_time = Label(bottom_frame)
         self.current_time.pack()
 
         self.window.mainloop()
