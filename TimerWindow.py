@@ -6,9 +6,17 @@ from sys import platform
 
 # Creates a window which runs a single timer inside of it
 # Queue is used to communicate with Timer thread
-class TimerWindow:
+class TimerWindow(Frame):
 
-    def __init__(self):
+    def __init__(self, root, is_displayed = False):
+
+        # Parent class constructor
+        Frame.__init__(self, root)
+        self.root = root
+
+        # is displayed option
+        self.is_displayed = is_displayed
+
         # Initializes state as not running
         self.is_running = False
 
@@ -18,36 +26,32 @@ class TimerWindow:
         # Queue used to communicate between timer and GUI threads
         self.time_queue = Queue()
 
-        # Creating the window
-        self.window = Tk()
-        self.window.geometry("150x80")
-        self.window.title("Timer")
-        self.window.resizable(height=False,width=False)
-
         # The StringVar holds the Entry's text
         self.user_time_field_string = StringVar()
 
         # Frame holding Entry and Button
-        top_frame = Frame(self.window)
-        top_frame.pack(side=TOP, fill=X)
+        self.top_frame = Frame(self)
+        self.top_frame.pack(side=TOP, fill=X)
 
         # The field which the user enters their time into
-        self.user_time_field = Entry(top_frame, width=10, textvariable=self.user_time_field_string)
+        self.user_time_field = Entry(self.top_frame, width=10, textvariable=self.user_time_field_string)
         self.user_time_field.pack(side=LEFT)
 
         # Button which starts the timer
-        self.start_button = Button(top_frame, text="Start", command=self.start_timer)
+        self.start_button = Button(self.top_frame, text="Start", command=self.start_timer)
         self.start_button.pack(side=LEFT)
 
         # Creates frame holding countdown so that it may be centered
-        bottom_frame = Frame(self.window, width=150)
-        bottom_frame.pack(side=TOP, fill=X)
+        self.bottom_frame = Frame(self, width=150)
+        self.bottom_frame.pack(side=TOP, fill=X)
 
         # Initializes current time as self attribute
-        self.current_time = Label(bottom_frame)
+        self.current_time = Label(self.bottom_frame)
         self.current_time.pack()
 
-        self.window.mainloop()
+        if is_displayed:
+            # Packs self into TimeApp root if it should be
+            self.pack()
 
     def start_timer(self):
 
@@ -58,7 +62,7 @@ class TimerWindow:
             self.is_running = True
 
             # Get the input integer
-            user_time = int(self.user_time_field_string.get())
+            user_time = float(self.user_time_field_string.get())
 
             # Create a label that shows the countdown
             self.current_time.configure(text=str(user_time))
@@ -69,8 +73,8 @@ class TimerWindow:
 
             # Simulates mainloop()
             while True:
-                self.window.update_idletasks()
-                self.window.update()
+                self.update_idletasks()
+                self.update()
 
                 # Checks Queue
                 if not self.time_queue.empty():
@@ -78,13 +82,13 @@ class TimerWindow:
 
                     # Displays timer value or finished message
                     if time_value > 0:
-                        self.current_time.configure(text=str(time_value))
+                        self.current_time.configure(text="{0:.1f}".format(time_value))
 
                     # Updates text then plays audio file
                     else:
                         self.current_time.configure(text="{} second timer\nfinished".format(user_time))
-                        self.window.update_idletasks()
-                        self.window.update()
+                        self.update_idletasks()
+                        self.update()
 
                         self.play_audio()
                         self.is_running = False
