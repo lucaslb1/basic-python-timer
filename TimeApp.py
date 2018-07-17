@@ -37,22 +37,35 @@ class TimeApp(Tk):
         # Packs the desired first window
         self.activate_timer()
 
-        self.mainloop()
+        self.master_loop()
+
+    def master_loop(self):
+        while True:
+            self.update_idletasks()
+            self.update()
+            if self.current_window == "stopwatch":
+                self.stopwatch_window.update_text()
 
     # Switches to the timer frame and makes the previous one invisible
     def activate_timer(self):
         if self.current_window != "timer":
             self.unpack()
+            self.stopwatch_window.is_displayed = False
+
             self.timer_window.pack()
             self.current_window = "timer"
+            self.timer_window.is_displayed = True
             print("Switching to timer")
 
     # Switches to the stopwatch frame and makes the previous one invisible
     def activate_stopwatch(self):
         if self.current_window != "stopwatch":
             self.unpack()
+            self.timer_window.is_displayed = False
+
             self.stopwatch_window.pack()
             self.current_window = "stopwatch"
+            self.stopwatch_window.is_displayed = True
             print("Switching to stopwatch")
 
     # Makes the current frame invisible
@@ -62,6 +75,9 @@ class TimeApp(Tk):
         elif self.current_window == "stopwatch":
             self.stopwatch_window.pack_forget()
 
+    def destroy(self):
+        self.stopwatch_window.quit()
+        Tk.destroy(self)
 
 if __name__ == "__main__":
     time_app = TimeApp()
