@@ -8,6 +8,12 @@ The timer allows the user to input a time in seconds into a box. When the timer 
 Once it reaches zero a finished message will appear and a alarm tone will go off. A new timer can then be inputted and
 started again.
 
+The stopwatch has a start button and will count up from zero. There is a stop and reset button.
+
+![Timer](/images/timer_image.png)
+
+![Stopwatch](/images/stopwatch_image.png)
+
 #### How do I run it?
 You must have python 3. Currently, audio will only play on mac or windows(untested).
 Once in the folder run the command

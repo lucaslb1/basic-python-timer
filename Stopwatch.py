@@ -14,6 +14,8 @@ class Stopwatch(threading.Thread):
         time_diff = 0
 
         is_running = False
+
+        # Loop that constantly runs
         while True:
             if not self.command_queue.empty():
                 command = self.command_queue.get()
