@@ -1,7 +1,7 @@
 from tkinter import *
 from TimerWindow import TimerWindow
 from StopwatchWindow import StopwatchWindow
-
+import time
 
 # This class will allows me to switch between windows, eg a timer, stopwatch, clock
 class TimeApp(Tk):
@@ -45,6 +45,8 @@ class TimeApp(Tk):
             self.update()
             if self.current_window == "stopwatch":
                 self.stopwatch_window.update_text()
+            if self.current_window == "timer":
+                self.timer_window.update_text()
 
     # Switches to the timer frame and makes the previous one invisible
     def activate_timer(self):

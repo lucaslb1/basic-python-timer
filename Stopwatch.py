@@ -4,9 +4,9 @@ import threading
 
 class Stopwatch(threading.Thread):
 
-    def __init__(self, time_queue, command_queue):
+    def __init__(self, holder, command_queue):
         threading.Thread.__init__(self)
-        self.time_queue = time_queue
+        self.holder = holder
         self.command_queue = command_queue
 
     def run(self):
@@ -27,11 +27,12 @@ class Stopwatch(threading.Thread):
                     start_time = time.time() - time_diff
                 elif command == "reset":
                     time_diff = 0
+                    self.holder.held_time = 0
                     is_running = False
                 elif command == "quit":
                     break
 
             if is_running:
-                self.time_queue.put(time.time()-start_time)
-                print(time.time()-start_time)
-            time.sleep(.1)
+                self.holder.held_time = time.time()-start_time
+
+            time.sleep(.05)

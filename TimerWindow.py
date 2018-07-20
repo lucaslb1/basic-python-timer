@@ -1,27 +1,21 @@
 from tkinter import *
 from queue import Queue
 from Timer import Timer
-from sys import platform
+from TimeHolder import TimeHolder
 
 
 # Creates a window which runs a single timer inside of it
 # Queue is used to communicate with Timer thread
 class TimerWindow(Frame):
 
-    def __init__(self, root, is_displayed = False):
+    def __init__(self, root):
 
         # Parent class constructor
         Frame.__init__(self, root)
         self.root = root
 
-        # is displayed option
-        self.is_displayed = is_displayed
-
         # Initializes state as not running
         self.is_running = False
-
-        # Alarm sound file
-        self.audio_file = "alarm_sound.wav"
 
         # Queue used to communicate between timer and GUI threads
         self.time_queue = Queue()
@@ -49,9 +43,20 @@ class TimerWindow(Frame):
         self.current_time = Label(self.bottom_frame)
         self.current_time.pack()
 
-        if is_displayed:
-            # Packs self into TimeApp root if it should be
-            self.pack()
+        # Timer holder which interacts with current timer
+        self.holder = TimeHolder(float(0))
+
+        # Used so update text doesn't display Timer Finished before a timer has gone off
+        self.completed_first = False
+
+    # Called in TimeApp's master_loop to update the text on the TimerWindow
+    def update_text(self):
+        if not self.completed_first:
+            pass
+        elif self.holder.held_time == 0:
+            self.current_time.configure(text="Timer Finished")
+        else:
+            self.current_time.configure(text="{0:.1f}".format(self.holder.held_time))
 
     def start_timer(self):
 
@@ -67,46 +72,15 @@ class TimerWindow(Frame):
             # Create a label that shows the countdown
             self.current_time.configure(text=str(user_time))
 
+            # Set holder to hold the correct time
+            self.holder.held_time = user_time
+
             # Create timer object
-            t1 = Timer("{} second timer".format(user_time), self.time_queue, user_time)
+            t1 = Timer(self.holder)
             t1.start()
 
-            # Simulates mainloop()
-            while True:
-                self.update_idletasks()
-                self.update()
-
-                # Checks Queue
-                if not self.time_queue.empty():
-                    time_value = self.time_queue.get()
-
-                    # Displays timer value or finished message
-                    if time_value > 0:
-                        self.current_time.configure(text="{0:.1f}".format(time_value))
-
-                    # Updates text then plays audio file
-                    else:
-                        self.current_time.configure(text="{} second timer\nfinished".format(user_time))
-                        self.update_idletasks()
-                        self.update()
-
-                        self.play_audio()
-                        self.is_running = False
-                        break
-
-    # Plays audio file dependent on os
-    def play_audio(self):
-
-        # Uses different methods to play sound depending on system
-        if platform == "darwin":
-            # OSX
-            import subprocess
-            return_code = subprocess.call(["afplay", self.audio_file])
-            print("Audio return code: {}".format(return_code))
-        elif platform == "win32":
-            # Windows
-            import winsound
-            winsound.playsound(self.audio_file, winsound.SND_FILENAME)
+            self.completed_first = True
+            self.is_running = False
 
 
 if __name__ == "__main__":
