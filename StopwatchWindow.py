@@ -12,10 +12,14 @@ class StopwatchWindow(Frame):
         self.root = root
         self.is_displayed = is_displayed
 
+        # A frame that holds the buttons
+        self.button_frame = Frame(self)
+        self.button_frame.pack(side=TOP, fill=X)
+
         # Buttons used to interact with the the stopwatch
-        self.start_button = Button(self, command=self.start, text="start").pack(side=LEFT)
-        self.stop_button = Button(self, command=self.stop, text="stop").pack(side=LEFT)
-        self.reset_button = Button(self, command=self.reset, text="reset").pack(side=LEFT)
+        self.start_button = Button(self.button_frame, command=self.start, text="start").pack(side=LEFT)
+        self.stop_button = Button(self.button_frame, command=self.stop, text="stop").pack(side=LEFT)
+        self.reset_button = Button(self.button_frame, command=self.reset, text="reset").pack(side=LEFT)
 
         # Things to do, queue to send commands, label that updates in its mainloop
         self.command_queue = Queue()
