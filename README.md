@@ -5,7 +5,7 @@
 The user can switch between a timer and stopwatch(not implemented yet) using the menu
 
 The timer allows the user to input a time in seconds into a box. When the timer is pressed a visual countdown will start.
-Once it reaches zero a finished message will appear and a alarm tone will go off. A new timer can then be inputted and
+Once it reaches zero a finished message will appear and a alarm tone will go off. A new timer can then be started and
 started again.
 
 The stopwatch has a start button and will count up from zero. There is a stop and reset button.
